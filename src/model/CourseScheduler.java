@@ -3,12 +3,21 @@ package model;
 import java.util.HashMap;
 
 public class CourseScheduler {
+
+    private static CourseScheduler instance;
     private HashMap<String, CourseOffering> courses;
     private HashMap<String, String> courseRegistrationMappings;
 
-    public CourseScheduler() {
+    private CourseScheduler() {
         this.courses = new HashMap<>();
         this.courseRegistrationMappings = new HashMap<>();
+    }
+
+    public static CourseScheduler getInstance() {
+        if (instance == null) {
+            instance = new CourseScheduler();
+        }
+        return instance;
     }
 
     public HashMap<String, CourseOffering> getCourses() {

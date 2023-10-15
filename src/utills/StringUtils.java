@@ -1,4 +1,4 @@
-package Utills;
+package utills;
 
 public class StringUtils {
     public static boolean isNullOrEmpty(String str) {

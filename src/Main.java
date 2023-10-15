@@ -3,7 +3,8 @@
 
 import model.CourseScheduler;
 import service.CourseSchedulerService;
-
+import constants.ErrorConstants;
+import constants.InputCommands;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class Main {
             return;
         }
 
-        CourseSchedulerService courseSchedulerService = new CourseSchedulerService(new CourseScheduler());
+        CourseSchedulerService courseSchedulerService = new CourseSchedulerService(CourseScheduler.getInstance());
         String filePath = args[0];
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -24,30 +25,30 @@ public class Main {
                 String[] inputs = line.split(" ");
 
                 switch (inputs[0]) {
-                    case "ADD-COURSE-OFFERING" -> {
+                    case InputCommands.ADD_COURSE_OFFERING -> {
                         if (inputs.length < 6) {
-                            System.out.println("INPUT_DATA_ERROR");
+                            System.out.println(ErrorConstants.INPUT_DATA_ERROR);
                             break;
                         }
                         System.out.println(courseSchedulerService.addCourseOffering(inputs[1], inputs[2], inputs[3], inputs[4], inputs[5]));
                     }
-                    case "REGISTER" -> {
+                    case InputCommands.REGISTER -> {
                         if (inputs.length < 3) {
-                            System.out.println("INPUT_DATA_ERROR");
+                            System.out.println(ErrorConstants.INPUT_DATA_ERROR);
                             break;
                         }
                         courseSchedulerService.registerEmployee(inputs[1], inputs[2]);
                     }
-                    case "CANCEL" -> {
+                    case InputCommands.CANCEL -> {
                         if (inputs.length < 2) {
-                            System.out.println("INPUT_DATA_ERROR");
+                            System.out.println(ErrorConstants.INPUT_DATA_ERROR);
                             break;
                         }
                         courseSchedulerService.cancelRegistration(inputs[1]);
                     }
-                    case "ALLOT" -> {
+                    case InputCommands.ALLOT -> {
                         if (inputs.length < 2) {
-                            System.out.println("INPUT_DATA_ERROR");
+                            System.out.println(ErrorConstants.INPUT_DATA_ERROR);
                             break;
                         }
                         courseSchedulerService.allotCourse(inputs[1]);
