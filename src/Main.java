@@ -1,16 +1,61 @@
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
+
+import model.CourseScheduler;
+import service.CourseSchedulerService;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Main {
     public static void main(String[] args) {
-        // Press Opt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it
+        if(args.length < 1) {
+            System.out.println("Please provide a file path as a command-line argument.");
+            return;
+        }
 
-        // Press Ctrl+R or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        CourseSchedulerService courseSchedulerService = new CourseSchedulerService(new CourseScheduler());
+        String filePath = args[0];
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Split the line into individual words using space as the delimiter
+                String[] inputs = line.split(" ");
 
-            // Press Ctrl+D to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Cmd+F8.
-            System.out.println("i = " + i);
+                switch (inputs[0]) {
+                    case "ADD-COURSE-OFFERING" -> {
+                        if (inputs.length < 6) {
+                            System.out.println("INPUT_DATA_ERROR");
+                            break;
+                        }
+                        System.out.println(courseSchedulerService.addCourseOffering(inputs[1], inputs[2], inputs[3], inputs[4], inputs[5]));
+                    }
+                    case "REGISTER" -> {
+                        if (inputs.length < 3) {
+                            System.out.println("INPUT_DATA_ERROR");
+                            break;
+                        }
+                        courseSchedulerService.registerEmployee(inputs[1], inputs[2]);
+                    }
+                    case "CANCEL" -> {
+                        if (inputs.length < 2) {
+                            System.out.println("INPUT_DATA_ERROR");
+                            break;
+                        }
+                        courseSchedulerService.cancelRegistration(inputs[1]);
+                    }
+                    case "ALLOT" -> {
+                        if (inputs.length < 2) {
+                            System.out.println("INPUT_DATA_ERROR");
+                            break;
+                        }
+                        courseSchedulerService.allotCourse(inputs[1]);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
